@@ -17,10 +17,10 @@ contract Registry is AccessManaged {
     struct Account {
         uint256 id;
         string name;
-        bytes32[] roles;
+        Role[] roles;
         uint256 createdAt;
         uint256 lastModifiedAt;
-        mapping(bytes32 => bytes32) attributes; // Account-specific attributes
+        bytes32[] attributes; // Account-specific attributes
         bytes32[] metadata; // Additional metadata
         uint256[] relatedEntities; // Related accounts IDs
         address[] verifiedAddresses; // List of verified addresses
@@ -39,38 +39,46 @@ contract Registry is AccessManaged {
     
     constructor(address manager) AccessManaged(manager) {}
 
-     // ============================================= FUNCTION MANAGEMENT ==============================================
+    // ============================================= FUNCTION MANAGEMENT ==============================================
 
     function register(
         string memory name,
         Role[] memory roles,
         bytes32[] memory additionalAttributes,
-        bytes32[] memory entityMetadata
+        bytes32[] memory metadata
     ) external returns (uint256) {
         require(userAddresses[msg.sender] == 0, "User already registered");
 
-        // Create a new accounts for the user
-        Account storage newAccount = accounts[nextAccountId++];
+        // Create a new account for the user
+        Account storage newAccount = accounts[nextAccountId];
         newAccount.id = nextAccountId;
         newAccount.name = name;
         newAccount.roles = roles;
         newAccount.createdAt = block.timestamp;
         newAccount.lastModifiedAt = block.timestamp;
 
-        // Set additional attributes
-        for (uint256 i = 0; i < additionalAttributes.length; i += 2) {
-            newAccount.attributes[additionalAttributes[i]] = additionalAttributes[i + 1];
+        // Append additional attributes
+        for (uint256 i = 0; i < additionalAttributes.length; i++) {
+            newAccount.attributes.push(additionalAttributes[i]);
         }
 
-        userAddresses[msg.sender] = newAccount.id;
+        // Append entity metadata
+        for (uint256 i = 0; i < metadata.length; i++) {
+            newAccount.metadata.push(metadata[i]);
+        }
+
+        userAddresses[msg.sender] = nextAccountId;
+        nextAccountId++;
 
         emit AccountRegistration(msg.sender, roles);
+
+        return newAccount.id;
     }
-    }
 
 
 
-    function getAccount(address userAddress) external view restricted returns (Account memory) {
+
+    function getAccount(address userAddress) external restricted returns (Account memory) {
         uint256 accountsId = userAddresses[userAddress];
         require(accountsId != 0, "User not registered");
         return accounts[accountsId];
