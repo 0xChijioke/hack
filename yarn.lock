@@ -1861,17 +1861,20 @@ __metadata:
     "@ethersproject/providers": ^5.7.2
     "@heroicons/react": ^2.0.11
     "@rainbow-me/rainbowkit": 1.3.5
+    "@tanstack/react-form": ^0.19.0
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
     "@types/node": ^17.0.35
     "@types/nprogress": ^0
     "@types/react": ^18.0.9
     "@types/react-copy-to-clipboard": ^5.0.4
+    "@types/react-dom": ^18.2.23
     "@typescript-eslint/eslint-plugin": ^5.39.0
     "@uniswap/sdk-core": ^4.0.1
     "@uniswap/v2-sdk": ^3.0.1
     autoprefixer: ^10.4.12
     blo: ^1.0.1
     daisyui: 4.5.0
+    dotenv: ^16.4.5
     eslint: ^8.15.0
     eslint-config-next: ^14.0.4
     eslint-config-prettier: ^8.5.0
@@ -2216,6 +2219,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/form-core@npm:0.19.0":
+  version: 0.19.0
+  resolution: "@tanstack/form-core@npm:0.19.0"
+  dependencies:
+    "@tanstack/store": ^0.3.1
+  checksum: 868bd7c150dcbf0c1b2e6354d1029b456549adb256b944f86c125a4d0d9ec3939d08f4db621d979cb65cc996873f90c8a5114a37b1e04805b2d1f0e47ce1228e
+  languageName: node
+  linkType: hard
+
 "@tanstack/query-core@npm:4.35.3":
   version: 4.35.3
   resolution: "@tanstack/query-core@npm:4.35.3"
@@ -2238,6 +2250,20 @@ __metadata:
   dependencies:
     "@tanstack/query-persist-client-core": 4.35.3
   checksum: 17865d295d6f7092642adf8282174c059ae459226f84ccf90c4de9d0f7e1116e1db8da7e0ad2e9ebd9acba90057b673703bf4cc22bbf3813bc4bdccdfb3b6973
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-form@npm:^0.19.0":
+  version: 0.19.0
+  resolution: "@tanstack/react-form@npm:0.19.0"
+  dependencies:
+    "@tanstack/form-core": 0.19.0
+    "@tanstack/react-store": ^0.3.1
+    decode-formdata: ^0.4.0
+    rehackt: ^0.0.3
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+  checksum: 3219a710cd642e72579ad840f2fbd8bf13779a6ebf5fecac2205a0fe2b8a95375bd4330be2f78aa3b494ed66ff8791acbb135567c7a6ad4f954a8b17d60b5d65
   languageName: node
   linkType: hard
 
@@ -2268,6 +2294,26 @@ __metadata:
     react-native:
       optional: true
   checksum: 4d7e4e6a8466095848d2924fdbcd2d22a36b53e2d0f79a7dec121c8d7af36ff857b1bae5a7b802f3a399922c9c9f38f2a06372b1fc7b1d5de960e78fa1d3d722
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-store@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@tanstack/react-store@npm:0.3.1"
+  dependencies:
+    "@tanstack/store": 0.3.1
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  checksum: 561575ed97f03f8a49485b494387111e520f69f24a838f1e48e06ef70c4658db0e0f4522b4fa45c0f0746db057daf6b2041ca070782df1a89f5e42dfca78070a
+  languageName: node
+  linkType: hard
+
+"@tanstack/store@npm:0.3.1, @tanstack/store@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@tanstack/store@npm:0.3.1"
+  checksum: 5f7dba20d4456ff77e3bffa72ef20f7395a8235e97876aa0ab6029e095691be024db1f232570d732aad85b644aa2c7f2a8947b854b2d38bcda0aef57bbf61ae2
   languageName: node
   linkType: hard
 
@@ -2622,6 +2668,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 48e356652c7c70394ef14a6f3dcec524a02fddabd892a9728083301c7f49bf5fd590215a0c0cad9812953af8fa23ab5813d9ad3a1b0ddd82b70ff000e7aa8a30
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:^18.2.23":
+  version: 18.2.23
+  resolution: "@types/react-dom@npm:18.2.23"
+  dependencies:
+    "@types/react": "*"
+  checksum: ebed13ffc393f96b3dbe2f959c857c3124c20e84718cded13016eaa2e3b650590557ea75584c4d3d3f226b0aae206167c9c81e971632c1f24bbd258f1d295b96
   languageName: node
   linkType: hard
 
@@ -5543,6 +5598,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"decode-formdata@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "decode-formdata@npm:0.4.0"
+  checksum: 2dcb7f51c23680ae962c5c48a79291c8616ef708c4b26562c338042c4fdba50c023881ced5d2d506e5f5f3e3e9b64054012d1bd431508c68479d27d73eadb6c9
+  languageName: node
+  linkType: hard
+
 "decode-uri-component@npm:^0.2.0, decode-uri-component@npm:^0.2.2":
   version: 0.2.2
   resolution: "decode-uri-component@npm:0.2.2"
@@ -5797,6 +5859,13 @@ __metadata:
   version: 16.3.1
   resolution: "dotenv@npm:16.3.1"
   checksum: 15d75e7279018f4bafd0ee9706593dd14455ddb71b3bcba9c52574460b7ccaf67d5cf8b2c08a5af1a9da6db36c956a04a1192b101ee102a3e0cf8817bbcf3dfd
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.4.5":
+  version: 16.4.5
+  resolution: "dotenv@npm:16.4.5"
+  checksum: 301a12c3d44fd49888b74eb9ccf9f07a1f5df43f489e7fcb89647a2edcd84c42d6bc349dc8df099cd18f07c35c7b04685c1a4f3e6a6a9e6b30f8d48c15b7f49c
   languageName: node
   linkType: hard
 
@@ -11830,6 +11899,21 @@ __metadata:
     define-properties: ^1.2.0
     set-function-name: ^2.0.0
   checksum: 869edff00288442f8d7fa4c9327f91d85f3b3acf8cbbef9ea7a220345cf23e9241b6def9263d2c1ebcf3a316b0aa52ad26a43a84aa02baca3381717b3e307f47
+  languageName: node
+  linkType: hard
+
+"rehackt@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "rehackt@npm:0.0.3"
+  peerDependencies:
+    "@types/react": "*"
+    react: "*"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 2e3674d84aca46802f38cf5b01c62bf7d0ca5e324b2749dd79156fa61723e9f84df7778c39f97d351e815a852a8a8ac9633e29b6b7b8734d18042fda86620f54
   languageName: node
   linkType: hard
 
