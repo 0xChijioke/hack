@@ -2,9 +2,14 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 
+import "hardhat/console.sol";
+
+
 import "@openzeppelin/contracts/access/manager/AccessManaged.sol";
 // import "@openzeppelin/contracts/utils/stucts/EnumerableMap.sol";
 
+
+import "./Manager.sol";
 
 
 contract Registry is AccessManaged {
@@ -30,6 +35,7 @@ contract Registry is AccessManaged {
     mapping(address => uint256) private userAddresses;
     mapping(uint256 => Account) private accounts;
     uint256 private nextAccountId = 1;
+    Manager private managerContract;
 
 
 
@@ -37,7 +43,9 @@ contract Registry is AccessManaged {
     event AccountRegistration(address indexed accountsAddress, Role[] roles);
 
     
-    constructor(address manager) AccessManaged(manager) {}
+    constructor(address manager) AccessManaged(manager) {
+        managerContract = Manager(manager); // Initialize your Manager contract
+    }
 
     // ============================================= FUNCTION MANAGEMENT ==============================================
 
@@ -47,7 +55,7 @@ contract Registry is AccessManaged {
         bytes32[] memory additionalAttributes,
         bytes32[] memory metadata
     ) external returns (uint256) {
-        require(userAddresses[msg.sender] == 0, "User already registered");
+        // require(userAddresses[msg.sender] == 0, "User already registered");
 
         // Create a new account for the user
         Account storage newAccount = accounts[nextAccountId];
@@ -68,7 +76,9 @@ contract Registry is AccessManaged {
         }
 
         userAddresses[msg.sender] = nextAccountId;
-        nextAccountId++;
+        unchecked {
+                nextAccountId++;
+            }
 
         emit AccountRegistration(msg.sender, roles);
 
@@ -77,13 +87,30 @@ contract Registry is AccessManaged {
 
 
 
+    function getAccountById(uint256 accountId) public view returns (Account memory) {
+        require(accountId != 0, "Invalid account id");
+        require(accounts[accountId].id != 0, "Invalid account id");
+        return accounts[accountId];
+    }
 
-    function getAccount(address userAddress) external restricted returns (Account memory) {
+
+
+    function getAccount(address userAddress) external view returns (Account memory) {
         uint256 accountsId = userAddresses[userAddress];
         require(accountsId != 0, "User not registered");
         return accounts[accountsId];
     }
 
+
+    // function getAllAccounts() external view returns (Account[] memory) {
+    //     Account[] memory allAccounts = new Account[](nextAccountId - 1); // Exclude the zero index account
+
+    //     for (uint256 i = 1; i < nextAccountId; i++) {
+    //         allAccounts[i - 1] = accounts[i];
+    //     }
+
+    //     return allAccounts;
+    // }
 
 
 
@@ -116,5 +143,3 @@ contract Registry is AccessManaged {
         return false;
     }
 }
-
-
