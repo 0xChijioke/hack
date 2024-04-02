@@ -46,9 +46,14 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     autoMine: true,
   });
 
-  // Get the deployed contract to interact with it after deploying.
-  // const registry = await hre.ethers.getContract<Contract>("Registry", deployer);
-  // console.log("👋 Initial greeting:", await registry);
+  // Get the deployed Registry contract
+  const registry = await hre.ethers.getContract<Contract>("Registry", deployer);
+
+  const adminRoleId = await manager.ADMIN_ROLE();
+
+  await manager.grantRole(adminRoleId, registry.getAddress(), 0);
+
+  console.log("👋 Registry contract granted admin role.");
 };
 
 export default deployYourContract;
