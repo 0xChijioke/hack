@@ -4,11 +4,13 @@ import { z } from "zod";
 import { itemSchema } from "./ItemSchema";
 import { pinataKeys } from "~~/utils/config";
 
+const pinJSONToIPFSUrl = process.env.NEXT_PUBLIC_PIN_JSON;
+
+
 export type FormState = {
     message: string;
 };
 
-const pinFileToIPFSUrl = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
 
 
 export const onFormAction = async (
@@ -71,7 +73,7 @@ const pinJsonToIPFS = async (tokenJson: any) => {
       };
 
       // Pin the token JSON to IPFS
-      const response = await fetch(pinFileToIPFSUrl, config);
+      const response = await fetch(pinJSONToIPFSUrl!, config);
 
         // Check if the response is successful
         if (response.ok) {

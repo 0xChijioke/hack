@@ -1,7 +1,9 @@
 import { pinataKeys } from "./config";
 
 
-const pinFileToIPFSUrl = "https://api.pinata.cloud/pinning/pinFileToIPFS";
+const pinFileToIPFSUrl = process.env.NEXT_PUBLIC_PIN_FILE;
+
+
 
 export const imageUpload = async (data: FormData): Promise<string> => {
     try {
@@ -22,7 +24,7 @@ export const imageUpload = async (data: FormData): Promise<string> => {
         };
 
         // Upload image to Pinata
-        const response = await fetch(pinFileToIPFSUrl, config);
+        const response = await fetch(pinFileToIPFSUrl!, config);
         
 
         // Check if the response is successful
