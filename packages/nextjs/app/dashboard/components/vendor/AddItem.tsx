@@ -20,6 +20,7 @@ import ConfirmationDialog from "~~/app/components/ConfirmationDialog.";
 import { useRef, useState } from "react";
 import { imageUpload } from "~~/utils/imageUpload";
 import Image from "next/image";
+import { useAccount } from "wagmi";
 
 
 
@@ -40,6 +41,7 @@ export const AddItem = ({
   }>;
 }) => {
 
+  const { address } = useAccount();
   const [state, formAction] = useFormState(onFormAction, {
     message: "",
   });
@@ -148,6 +150,7 @@ export const AddItem = ({
               evt.preventDefault();
               form.handleSubmit(() => {
                 const formData = new FormData(formRef.current!);
+                formData.append("address", address!);
                 if (imageSrc) {
                   formData.append("imageSrc", imageSrc);
                 }
