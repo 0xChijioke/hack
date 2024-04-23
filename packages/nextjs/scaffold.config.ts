@@ -1,5 +1,20 @@
 import * as chains from "viem/chains";
 
+// Blast chain
+export const morphSepolia = {
+  id: 2710,
+  name: "morphSepolia",
+  network: "morphSepolia",
+  nativeCurrency: { name: "morphSepolia", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://rpc-testnet.morphl2.io/"] },
+    public: { http: ["https://rpc1-testnet.morphl2.io"] },
+  },
+  blockExplorers: {
+    default: { name: "morphl2", url: "https://explorer-testnet.morphl2.io/" },
+  },
+} as const satisfies chains.Chain;
+
 export type ScaffoldConfig = {
   targetNetworks: readonly chains.Chain[];
   pollingInterval: number;
