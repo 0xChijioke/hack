@@ -2,7 +2,9 @@
 
 import { z } from "zod";
 import { itemSchema } from "./ItemSchema";
-import { pinataKeys } from "~~/utils/config";
+import { pinataKeys, publicClient } from "~~/utils/config";
+import deployedContracts from "~~/contracts/deployedContracts";
+import { getWalletClient } from "@wagmi/core";
 
 const pinJSONToIPFSUrl = process.env.NEXT_PUBLIC_PIN_JSON;
 
@@ -33,10 +35,21 @@ export const onFormAction = async (
         }
 
         const ipfsHash = await pinJsonToIPFS(constructTokenJson(parsed.data, data.imageSrc as string));
-      console.log("Item registered. IPFS Hash:", ipfsHash);
+        console.log("Item registered. IPFS Hash:", ipfsHash);
+        
+        const tx = await addItemAndTokenize(
+            parsed.data.name,
+            parsed.data.description,
+            BigInt(parsed.data.price),
+            BigInt(parsed.data.quantity),
+            ipfsHash,
+            data.address as string
+        )
       
 
       return { message: `Item added successfully. IPFS Hash: ${ipfsHash}`, item: parsed.data };
+
+        
     } catch (error) {
         console.error("Error processing form data:", error);
         return { message: "Failed to add item. Please try again later." };
@@ -88,6 +101,43 @@ const pinJsonToIPFS = async (tokenJson: any) => {
         }
     } catch (error) {
         console.error("Error pinning token JSON to IPFS:", error);
+        throw error;
+    }
+};
+
+
+
+const addItemAndTokenize = async (name: string, description: string, price: bigint, quantity: bigint, ipfsHash: string, address: string) => {
+    try {
+        console.log("Started registeration of item on the contract...");
+        const walletClient = await getWalletClient({ chainId: 31337 });
+        
+        const { request } = await publicClient.simulateContract({
+            address: deployedContracts[31337].VendorOps.address,
+            abi: deployedContracts[31337].VendorOps.abi,
+            functionName: 'addItemAndTokenize',
+            args: [name, description, '', ipfsHash, price, quantity],
+            account: address,
+        })
+        // console.log("request", request)
+    
+            
+    
+        const register = await walletClient!.writeContract(request);
+        // console.log("register", register);
+      
+      
+        
+      const decodedData = await publicClient.getContractEvents({
+          address: deployedContracts[31337].VendorOps.address,
+          abi: deployedContracts[31337].VendorOps.abi,
+          eventName: 'ItemAdded',
+      });
+    //   console.log("decodedData", decodedData);
+  
+
+    } catch (error) {
+        console.error("Error adding item and tokenizing:", error);
         throw error;
     }
 };
