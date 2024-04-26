@@ -13,3 +13,5 @@ node_modules
 .vscode
 .idea
 .vercel
+temp_auto_push.bat
+temp_interactive_push.bat
